@@ -15,7 +15,7 @@ defmodule App.Application do
     ]
 
     consumers = 
-      for id <- 1..(System.schedulers_online * 2) do
+      for id <- 1..1 do
         worker(App.Consumer, [], id: id)
       end
 
@@ -24,4 +24,13 @@ defmodule App.Application do
     opts = [strategy: :one_for_one, name: App.Supervisor]
     Supervisor.start_link(children ++  consumers, opts)
   end
+
+  def start_later(module, function, args) do
+    payload = {module, function, args} |> :erlang.term_to_binary
+    Tasks.Repo.insert_all "tasks", [
+      %{status: "waiting", payload: payload}
+    ]
+    send App.Producer, :yo_you_have_data
+  end
+
 end

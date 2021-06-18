@@ -7,9 +7,12 @@ defmodule App.Application do
 
   def start(_type, _args) do
 
+    import Supervisor.Spec, warn: false
     # List all child processes to be supervised
     children = [
       Tasks.Repo,
+      worker(App.Producer, []),
+      worker(App.Consumer, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

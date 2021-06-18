@@ -27,16 +27,16 @@ defmodule App.Producer do
   defp take(limit) do
     Repo.transaction fn -> 
       ids = Repo.all waiting(limit)
-      {count, events} = Repo.update_all by_ids(ids),
-            [set: [status: "running"]],
-            [returning: [:id, :payload]]
+      {count, events} = 
+        by_ids(ids)
+        |> Repo.update_all([set: [status: "running"]])
 
-      {count, events || []}
+      {count, events}
     end
   end
 
   defp by_ids(ids) do
-    from t in "tasks", where: t.id in ^ids
+    from t in "tasks", where: t.id in ^ids, select: %{id: t.id, payload: t.payload}
   end
 
   defp waiting(limit) do

@@ -14,7 +14,7 @@ defmodule App.Consumer do
       IO.inspect({self(), event})
       %{id: id, payload: payload} = event
       {module, function, args} = :erlang.binary_to_term(payload)
-      Kernel.apply(module, function, args)
+      Kernel.apply(module, function, [args])
     end
 
     # As a consumer we never emit events

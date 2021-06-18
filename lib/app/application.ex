@@ -12,12 +12,16 @@ defmodule App.Application do
     children = [
       Tasks.Repo,
       worker(App.Producer, []),
-      worker(App.Consumer, [])
     ]
+
+    consumers = 
+      for id <- 1..(System.schedulers_online * 2) do
+        worker(App.Consumer, [], id: id)
+      end
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: App.Supervisor]
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(children ++  consumers, opts)
   end
 end

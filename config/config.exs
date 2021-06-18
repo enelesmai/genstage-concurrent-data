@@ -2,7 +2,7 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :app, Messages.Repo,
+config :app, Tasks.Repo,
   database: "app_repo",
   username: "enelesmai",
   password: "",
@@ -14,7 +14,7 @@ config :app, Messages.Repo,
 # if you want to provide default values for your application for
 # 3rd-party users, it should be done in your "mix.exs" file.
 
-config :app, ecto_repos: [Messages.Repo]
+config :app, ecto_repos: [Tasks.Repo]
 
 # You can configure your application as:
 #

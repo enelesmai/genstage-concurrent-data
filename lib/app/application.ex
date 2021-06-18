@@ -6,9 +6,10 @@ defmodule App.Application do
   use Application
 
   def start(_type, _args) do
+
     # List all child processes to be supervised
     children = [
-      Messages.Repo
+      Tasks.Repo,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
